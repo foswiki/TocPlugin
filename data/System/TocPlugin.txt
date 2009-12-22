@@ -34,6 +34,7 @@ TocPluginHelp uses the plugin, and contains complete help information.
 
 |  One Line Description: | Table of contents and cross-reference management |
 |  Author: | Foswiki:Main.CrawfordCurrie http://c-dot.co.uk |
+|  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: |
 |  22 Dec 2009 | Updated for Foswiki |
@@ -41,8 +42,8 @@ TocPluginHelp uses the plugin, and contains complete help information.
 |  1 Oct 2001 | Corrected directory naming (no thanks to <nop>WindowsME!) |
 |  23 Sep 2001 | Directories restructured according to Plugin requirements, and turned into a zip file |
 |  15 Sep 2001 | Initial version. Originally developed for use by Motorola documentation teams. |
-|  Copyright: | @copy; 2001-2002 Motorola. All Rights Reserved. |
-|  License: | GPL |
+|  Copyright: | &copy; 2001-2002 Motorola. All Rights Reserved. |
+|  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
 |  Home: | http://foswiki.org/Extensions/%TOPIC% |
 |  Support: | http://foswiki.org/Support/%TOPIC% |
 
