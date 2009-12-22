@@ -1,7 +1,7 @@
-If you see tags such as %<nop>SECTION0% on the next line, read %SYSTEMWEB%.TocPlugin
+If you see tags such as %<nop>SECTION0% on the next line, read TocPlugin
 
 %SECTION0% Table of Contents and Cross-Reference Plugin
-This topic describes the facilities provided by the TOC TWiki Plugin
+This topic describes the facilities provided by the TOC Plugin
 for the support of documentation generation. The extensions support
 definition of an order among the topics in the web for the generation
 of tables of contents, together with cross-references that operate
@@ -10,13 +10,13 @@ of tables of contents, together with cross-references that operate
 %SECTION1{name=installation}% Installation and Configuration
 
 Installation of the Plugin is straightforward. Simply unpack the tar
-file at the top level of your TWiki installation.     
+file at the top level of your installation.     
 
 %SECTION2{name=WebOrder}% The =WebOrder= special topic
 The documentation extensions depend on the existance of a special
 topic called WebOrder, which is is analagous to a Framemaker
 "book". This topic should contain a list of the topics you want
-included.  This list must be formatted as a TWiki-format bulleted list
+included.  This list must be formatted as a wiki-format bulleted list
 e.g.
 %ANCHOR{type=Example,name=WebOrder,display=no}% The Weborder topic
 <pre>
@@ -27,7 +27,7 @@ Both =WikiWords=
 and =[<nop>[Odd Wiki Words]]= may be used to refer to topics.
 
 *NOTES*
-	* The WebOrder can contain any other TWiki or HTML formatting but it should be noted that *all* TWiki-format list bullets in the topic are taken as part of the ordering list.
+	* The WebOrder can contain any other TML or HTML formatting but it should be noted that *all* TML-format list bullets in the topic are taken as part of the ordering list.
 
 %SECTION1{name=Attributes}% Attributes on documentation tags
 Following the TWiki standard, attributes are used to pass values to
@@ -66,7 +66,7 @@ If a %<nop>SECTION0% tag occurs in a topic, the heading of that section will rep
 *NOTES*
 	* The =name= attribute cannot be used to refer to a %<nop>SECTION0% tag.
 
-%SECTION2{name=TOC}% Building the table of contents; the =%<nop>TOC%= tag
+%SECTION2{name=TOC}% Building the table of contents
 <i>Supported attributes:</i> =depth topic=
 
 You can build a table of contents by inserting
@@ -208,24 +208,6 @@ and the first =SECTION1= within <nop>SecondLevelTopic will be 1.1.1. The first =
 <nop>TopLevelTopic will now be numbered 1.2. <nop>AnotherTopLevelTopic will still be numbered 2.
 
 %SECTION1{name=tips}% Hints and Tips
-	* The standard TWiki variable HTTP_EQUIV_ON_VIEW can be set in WebPreferences to define a style-sheet for the web, for example to apply corporate style quidelines to your documents.
 	* Include a %<nop>TOCCHECK% tag at the end of the table of contents topic.
 	* Name all sections. This makes it easier to refer to them by symbolic names rather than trying to REF numbered sections.
-
-%SECTION1% Copyright
-The TOC Plugin is a development of the Architectures and Systems
-Platforms group of Motorola Inc. and is protected by the following
-copyrights:
-	* Copyright (C) 2001 Motorola. All Rights Reserved.
-
-%SECTION1% License
-As required for the publication of all extensions to TWiki, the
-software is published under the terms of the GNU General Public
-License.
-
-This program is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details, published at
-http://www.gnu.org/copyleft/gpl.html
 

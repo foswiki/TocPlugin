@@ -1,0 +1,49 @@
+---++ <nop>%TOPIC%
+
+%SHORTDESCRIPTION%
+
+This plugin adds powerful support for generation and maintenance of tables
+of contents and cross-references *across multiple topics*.
+
+---+++ Syntax Rules
+
+Adds a number of new tags:
+
+	* %<nop>SECTIONn% - inserts an anchored section header
+	* %<nop>CONTENTS% - generates a table of contents for a topic or an entire web, with full expansion depth control
+	* %<nop>REF% - inserts a symbolically named cross-reference URL
+	* %<nop>ANCHOR% - inserts a symbolically named jump target
+Example:
+
+%ATTACHURL%/screenshot.png
+
+TocPluginHelp uses the plugin, and contains complete help information.
+
+---++ <nop>%TOPIC% Settings
+
+<!--
+   * Set SHORTDESCRIPTION = %$SHORTDESCRIPTION%
+-->
+
+---+++ Plugin Installation Instructions
+%$INSTALL_INSTRUCTIONS%
+	* If you see a link here: %REF{topic=TocPluginHelp,type=Section,name=installation}% then installation was successful
+	* Check the TocPluginHelp topic. You should see expanded section numbers.
+
+---+++ Plugin Info
+
+|  One Line Description: | Table of contents and cross-reference management |
+|  Author: | Foswiki:Main.CrawfordCurrie http://c-dot.co.uk |
+|  Version: | %$VERSION% |
+|  Change History: |
+|  22 Dec 2009 | Updated for Foswiki |
+|  20 Apr 2006 | Minor doc update, headings no longer marked up as anchor text (Foswiki:Main.SteffenPoulsen) |
+|  1 Oct 2001 | Corrected directory naming (no thanks to <nop>WindowsME!) |
+|  23 Sep 2001 | Directories restructured according to Plugin requirements, and turned into a zip file |
+|  15 Sep 2001 | Initial version. Originally developed for use by Motorola documentation teams. |
+|  Copyright: | @copy; 2001-2002 Motorola. All Rights Reserved. |
+|  License: | GPL |
+|  Home: | http://foswiki.org/Extensions/%TOPIC% |
+|  Support: | http://foswiki.org/Support/%TOPIC% |
+
+%META:FILEATTACHMENT{name="screenshot.png" attr="h"}%
