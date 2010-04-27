@@ -612,6 +612,7 @@ sub replaceAllTags {
     $text = _replaceTypeTags("REFTABLE", $text, $alt);
     $text = _replaceTypeTags("CONTENTS", $text, $alt);
     $text = _replaceTypeTags("TOCCHECK", $text, $alt);
+    $text = _replaceTypeTags("TOCBUTTONS", $text, $alt);
 
     return $text;
 }

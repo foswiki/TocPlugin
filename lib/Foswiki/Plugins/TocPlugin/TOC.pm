@@ -35,13 +35,16 @@ sub _processTag {
     } elsif ($tag eq "TOCDUMP") {
         return $toc->toString(0);
     } else {
-        #      my $ct = $toc->currentTopic();
+	if ($tag eq "TOCBUTTONS") {
+	    # Return nothing for topics not in WebOrder
+	    return "" unless $ct;
+	    return &Foswiki::Plugins::TocPlugin::TOC::processTOCBUTTONSTag($toc, $wif, $ct->wikiName());
+	}
         return Foswiki::Plugins::TocPlugin::Section::_error("Bad $tag: Current topic not in WebOrder") unless $ct;
         if ($tag eq "ANCHOR") {
             my $anc = $ct->processANCHORTag(@params);
             return $anc->generateTarget() if $anc;
         } elsif ($tag eq "SECTION") {
-            #        my $ct = $toc->currentTopic();
             my $sec = $ct->processSECTIONTag(@params);
             return $sec->generateTarget() if $sec;
         } elsif ($tag eq "REF") {
@@ -85,8 +88,72 @@ sub _processTOCTags {
     $text =~ s/%(TOCDUMP)%/&_processTag($toc, $wif, $toc->currentTopic, $1, $nullatt)/geo;
     $text =~ s/%(TOCCHECK)%/&_processTag($toc, $wif, $toc->currentTopic, $1, $nullatt)/geo;
     $text =~ s/%(CONTENTS)({[^%]*})?%/&_processTag($toc, $wif, $toc->currentTopic, $1, Foswiki::Plugins::TocPlugin::Attrs->new($2))/geo;
+    $text =~ s/%(TOCBUTTONS)%/&_processTag($toc, $wif, $toc->currentTopic, $1, $nullatt)/geo;
     return $text;
 }
+
+my $toc = undef;
+my $mess = undef;
+
+sub processTOCBUTTONSTag
+{
+    my ($toc, $wif, $topic) = @_;
+
+    return "" unless (defined $toc);
+    my $mytopic = $toc->currentTopic();
+    return "" unless (defined $mytopic);
+
+    # Get list of files in the web
+    my $i;
+    my @fullList = ();
+    $toc->getTopicList(\@fullList);
+
+    for ($i = 0; $i< scalar(@fullList); $i++) {
+	last if ($fullList[$i] eq $topic);
+    }
+
+    my ($prev, $next, $home);
+    my ($prevText, $nextText, $homeText);
+    if ($i>0) {
+        $prev=$fullList[$i-1];
+        $prevText="Prev";
+    } else {
+        $prev=$prevText="";
+    }
+    if ($i<scalar(@fullList)-1) {
+        $next=$fullList[$i+1];
+        $nextText="Next";
+    } else {
+        $next=$nextText="";
+    }
+    $home=$fullList[0];
+    $homeText="Home";
+
+    if ($prev) {
+        $prev=$toc->_findTopic($prev);
+        $toc->loadTopic($prev);
+        $prev=$prev->generateReference($prev->wikiName());
+    }
+    if ($next) {
+        $next=$toc->_findTopic($next);
+        $toc->loadTopic($next);
+        $next=$next->generateReference($next->wikiName());
+    }
+    if ($home) {
+        $home=$toc->_findTopic($home);
+        $toc->loadTopic($home);
+        $home=$home->generateReference($home->wikiName());
+    }
+
+    return ("<table WIDTH=\"100%\" BORDER=\"0\" CELLPADDING=\"0\" CELLSPACING=\"0\">
+<tr><td WIDTH=\"33%\" ALIGN=\"left\" VALIGN=\"top\">$prev<td>
+<td WIDTH=\"33%\" ALIGN=\"center\" VALIGN=\"top\">$home<td>
+<td WIDTH=\"33%\" ALIGN=\"right\" VALIGN=\"top\">$next<td><tr>
+<tr><td WIDTH=\"33%\" ALIGN=\"left\" VALIGN=\"top\">$prevText<td>
+<td WIDTH=\"33%\" ALIGN=\"center\" VALIGN=\"top\">$homeText<td>
+<td WIDTH=\"33%\" ALIGN=\"right\" VALIGN=\"top\">$nextText<td><tr></table>");
+}
+
 
 sub _printWithTOCTags {
     my ($toc, $wif, $ct, $text) = @_;
@@ -119,8 +186,6 @@ sub _printWithTOCTags {
     
     return $text;
 }
-
-my $toc = undef;
 
 sub _webPrint {
     my ($toc, $wif, $web) = @_;

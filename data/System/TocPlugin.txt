@@ -1,3 +1,4 @@
+%META:TOPICINFO{author="WolfgangDenk" date="1271416286" format="1.1" version="1.2"}%
 ---++ <nop>%TOPIC%
 
 %SHORTDESCRIPTION%
@@ -13,6 +14,7 @@ Adds a number of new tags:
 	* %<nop>CONTENTS% - generates a table of contents for a topic or an entire web, with full expansion depth control
 	* %<nop>REF% - inserts a symbolically named cross-reference URL
 	* %<nop>ANCHOR% - inserts a symbolically named jump target
+	* %<nop>TOCBUTTONS% - inserts "Prev", "Home" and "Next" buttons
 Example:
 
 %ATTACHURL%/screenshot.png

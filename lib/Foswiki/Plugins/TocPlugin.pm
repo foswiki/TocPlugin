@@ -37,6 +37,7 @@ sub preRenderingHandler {
         $web, $topic);
     $_[0] = Foswiki::Plugins::TocPlugin::TOC::processTopic(
         $wif, $web, $topic, $_[0]);
+    $_[0] =~ s/%TOCBUTTONS%//go; #dzus ugly fix - FIXME in time
 }
 
 1;

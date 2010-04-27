@@ -1,0 +1,6 @@
+%TMPL:INCLUDE{"view"}%
+%TMPL:DEF{"contentfooter"}%<!-- content footer -->
+%IF{"$'DISPLAYREVISIONINFO'='off'" else="$percntTMPL:P{\"revinfo\"}$percnt"}%<!-- revinfo //-->
+<hr class="doNotDisplay" />
+<div id="main-copy">%TOCBUTTONS%</div>
+<!-- //content footer -->%TMPL:END%

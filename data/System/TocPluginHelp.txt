@@ -1,3 +1,4 @@
+%META:TOPICINFO{author="WolfgangDenk" date="1271417585" format="1.1" reprev="1.2" version="1.2"}%
 If you see tags such as %<nop>SECTION0% on the next line, read TocPlugin
 
 %SECTION0% Table of Contents and Cross-Reference Plugin
@@ -186,6 +187,24 @@ requested type will be listed.
 
 *NOTES*
 	* If you use =REFTABLE= with the type =Section= the table will contain a list of all _named_ sections. For example %ANCHOR{type=Example,name=example2,display=no}% REFTABLE{type=Section} example %REFTABLE{type=Section}%
+
+%SECTION1{name=AddTocButtos}% Adding navigation buttons
+When using the =WebOrder= special topic to collect a list of topics
+into a somewhat "linearized" form (a "book"), it is often very
+convenient to be able to add navigation buttons to the previous and
+the next pages as well as to the home page (table of contents). This
+can be done by adding the %<nop>TOCBUTTONS% tag to your pages. For
+example, you can use it in a template which is included either at the
+top or the bottom of your pages. The included
+="view.tocbuttons.tmpl"= template (intended to be used with NatSkin)
+adds the %<nop>TOCBUTTONS% tag to the content footer of all pages in
+the web. To activate it, use ="* set SKIN = tocbuttons, nat"= in your
+<nop>WebPreferences.
+
+Note that the "Prev", "Home" and "Next" links will be added only for
+such topics that are listed in the =WebOrder= special topic, and they
+will only be inserted when viewing a page, i. e. they will for
+example not show up when printing such a topic or the whole "book".
 
 %SECTION1{name=IndentedWebOrder}% Getting clever
 It is possible to change the way the table of contents for the web is
