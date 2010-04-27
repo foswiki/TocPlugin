@@ -581,7 +581,7 @@ sub toPrint {
         my $text = $wif->readTopic($this->wikiName);
 
         # $res .= "Expanding wikiName= " . $wif->webName . "." . $this->wikiName() . " ";
-        $res .= TOC::_printWithTOCTags($toc, $wif, $ct, $text);
+        $res .= Foswiki::Plugins::TocPlugin::TOC::_printWithTOCTags($toc, $wif, $ct, $text);
 
     }
     
