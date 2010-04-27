@@ -512,6 +512,7 @@ sub parseTopicText {
             $key = $1;
             if ($key == 0) {
                 $this->text($title);
+                $this->_addAnchor("Section", $attrs->get("name"), $title, 0);
             } else {
                 $attrs->set("level", $this->level() + $key);
                 $this->processSECTIONTag($attrs);
