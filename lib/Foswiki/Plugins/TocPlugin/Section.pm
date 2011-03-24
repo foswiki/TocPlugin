@@ -600,7 +600,7 @@ sub toPrint {
 # remove tags of a given type from a string
 sub _replaceTypeTags {
     my ($type, $text, $alt) = @_;
-    $text =~ s/%$type({[^%]*})?%/$alt/geo;
+    $text =~ s/%$type({[^%]*})?%/$alt/ge;
     return $text;
 }
 
