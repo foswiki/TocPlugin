@@ -18,6 +18,7 @@ package Foswiki::Plugins::TocPlugin::Section;
 
 use strict;
 use integer;
+use Assert;
 
 use Foswiki::Plugins::TocPlugin::Attrs ();
 use Foswiki::Plugins::TocPlugin::Anchor ();
@@ -44,7 +45,7 @@ sub new {
     $this->{PARENT} = undef;
     # position in the parent section's subsection list
     $this->{POSITION} = -1;
-    # files only - wiki name of this section
+    # files only - wiki name of this section (web.topic)
     $this->{WIKINAME} = undef;
     # file only - has been loaded
     $this->{IS_LOADED} = undef;
@@ -182,7 +183,7 @@ sub _getLastSubsection {
 sub _addSection {
     my ($this, $newEntry) = @_;
 
-    die "Section depth not relative to root" if
+    die "Section depth not relative to root ".$newEntry->level()." <= ".$this->level() if
       $newEntry->level() <= $this->level();
 
     if ($newEntry->level() == $this->level() + 1) {
@@ -500,13 +501,14 @@ sub _processREFTag {
 # Load the topic into this section
 sub parseTopicText {
     my ( $this, $text) = @_;
-    
+    my $i = 0;
+
     while ($text =~ s/%(SECTION[0-9]+|ANCHOR)({[^%]*})?%(.*)//o) {
-        my $key = $1;
+        my ($key, $title) = ($1, $3);
         my $attrs = Foswiki::Plugins::TocPlugin::Attrs->new($2);
-        my $title = $3;
         $title =~ s/(^\s+|\s+$)//go;
         $attrs->set("text", $title);
+	$attrs->{name} ||= $i++;
 
         if ($key =~ s/([0-9]+)//o) {
             $key = $1;
@@ -580,7 +582,6 @@ sub toPrint {
         my $ct = $toc->_findTopic($this->wikiName);
         my $text = $wif->readTopic($this->wikiName);
 
-        # $res .= "Expanding wikiName= " . $wif->webName . "." . $this->wikiName() . " ";
         $res .= Foswiki::Plugins::TocPlugin::TOC::_printWithTOCTags($toc, $wif, $ct, $text);
 
     }

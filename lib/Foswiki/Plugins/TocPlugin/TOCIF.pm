@@ -39,32 +39,24 @@ sub getInterface {
         $singleton = $this;
     }
     $this->{WEBNAME} = $web;
-    $this->{TOPIC} = $topic;
+    $this->{TOPICNAME} = $topic;
     return bless($this, $class);
-}
-
-sub webName {
-    my $this = shift;
-    return $this->{WEBNAME};
-}
-
-sub topicName {
-    my $this = shift;
-    return $this->{TOPIC};
 }
 
 sub topicExists {
     my ($this, $topic) = @_;
-    return Foswiki::Func::topicExists($this->webName(), $topic);
+    my ($w, $t) = Foswiki::Func::normalizeWebTopicName($this->{WEBNAME}, $topic);
+    return Foswiki::Func::topicExists($w, $t);
 }
 
 sub readTopic {
     my ($this, $topic) = @_;
     my $text = "";
     # read the topic
-    $text = Foswiki::Func::readTopic($this->webName(), $topic);
+    my ($w, $t) = Foswiki::Func::normalizeWebTopicName($this->{WEBNAME}, $topic);
+    $text = Foswiki::Func::readTopic($w, $t);
     # expand the variables -- in the context of the appropriate topic
-    $text = Foswiki::Func::expandCommonVariables($text, $topic, $this->webName());
+    $text = Foswiki::Func::expandCommonVariables($text, $t, $w);
     # this can't be right -- turn verbatim tags into pre tags
     $text =~ s/<verbatim>/<pre>/go;
     $text =~ s/<\/verbatim>/<\/pre>/go;
@@ -73,7 +65,7 @@ sub readTopic {
 
 sub webDirList {
     my $this = shift;
-    return Foswiki::Func::getTopicList($this->webName());
+    return Foswiki::Func::getTopicList($this->{WEBNAME});
 }
 
 1;

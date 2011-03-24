@@ -1,4 +1,3 @@
-	* TocPluginHelp
-	* TocPlugin
+   1 TocPlugin
 
 %TOCCHECK%

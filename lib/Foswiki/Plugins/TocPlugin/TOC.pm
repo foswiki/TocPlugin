@@ -76,9 +76,9 @@ sub _processTOCTags {
             if ($tag =~ s/SECTION([0-9]+)//o) {
                 my $level = $1;
                 $attrs->set("level", $ct->level() + $level);
-                $text =~ s/\<TOC_Mark\>/&_processTag($toc, $wif, $toc->currentTopic, "SECTION", $attrs)/eo;
+                $text =~ s/\<TOC_Mark\>/&_processTag($toc, $wif, $toc->currentTopic, "SECTION", $attrs)/e;
             } else {
-                $text =~ s/\<TOC_Mark\>/&_processTag($toc, $wif, $toc->currentTopic, "ANCHOR", $attrs)/eo;
+                $text =~ s/\<TOC_Mark\>/&_processTag($toc, $wif, $toc->currentTopic, "ANCHOR", $attrs)/e;
             }
         }
     }
@@ -95,8 +95,7 @@ sub _processTOCTags {
 my $toc = undef;
 my $mess = undef;
 
-sub processTOCBUTTONSTag
-{
+sub processTOCBUTTONSTag {
     my ($toc, $wif, $topic) = @_;
 
     return "" unless (defined $toc);

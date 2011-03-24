@@ -21,6 +21,7 @@ use integer;
 
 use Foswiki::Plugins::TocPlugin::Attrs ();
 use Foswiki::Plugins::TocPlugin::Section ();
+use Foswiki::Plugins::BookmakerPlugin::Book ();
 
 # A specialisation of Section for the root of the table of contents
 
@@ -55,7 +56,7 @@ sub web {
 # about to perform an operation that requires it.
 sub currentTopic {
     my $this = shift;
-    my $currTopic = $this->_findTopic($this->wif()->topicName());
+    my $currTopic = $this->_findTopic($this->wif()->{TOPICNAME});
     $currTopic->loaded(1) if $currTopic;
     return $currTopic;
 }
@@ -87,7 +88,7 @@ sub loadTopic {
 }
 
 # PUBLIC STATIC
-# Factor method to generate the TOC for a web.
+# Factory method to generate the TOC for a web.
 # Initialise the table of contents from the WebOrder topic. The
 # table will only be partially populated; no topics will actually
 # be parsed yet.
@@ -98,41 +99,24 @@ sub createTOC {
     my $retmess = "";
 
     # load the table of contents topic
+    # Note that this does not use the BookmakerPlugin API for the simple reason that it has to
+    # support an old format for the WebOrder topic. However it is fully compatible.
     if ($wif->topicExists("WebOrder")) {
-        my $tocText = $wif->readTopic("WebOrder");
-
-        # allow [[Odd Wiki Word]] links
-        my @tocNames = split( /[\n\r]/, $tocText );
-        # extract the bulleted list
-        @tocNames = grep( /^\s+\*\s/, @tocNames );
-    
-        my $tocEntry;
+        my $book = Foswiki::Plugins::BookmakerPlugin::Book->new("$web.WebOrder");
         my $attrs = Foswiki::Plugins::TocPlugin::Attrs->new("");
 
         # Check that each topic in the WebOrder only appears once
-        my %seen;
 
-        foreach $tocEntry ( @tocNames ) {
-            my $name = $tocEntry;
-            $name =~ s/^[\s\*]*//o;
+	my $bit = $book->each();
+
+        while ($bit->hasNext()) {
+	    my $tocEntry = $bit->next();
+            my $name = $tocEntry->{topic}; # Ignore web; tocs only work in a single web
         
-            my $level = 0;
-            while ($tocEntry =~ s/^(\t|   )//o) {
-                $level++;
-            }
-
-            if ($seen{$name}) {
-                $retmess .=
-                  Foswiki::Plugins::TocPlugin::Section::_error(
-                      "Topic $name used more than once in WebOrder<br>");
-            }
-            $seen{$name} = 1;
-
-            $attrs->set("level", $level);
+            $attrs->set("level", $tocEntry->{level} + 1);
             $attrs->set("text", $name);
             my $ne = $this->processSECTIONTag($attrs);
-            my $wn = Foswiki::Plugins::TocPlugin::Section::_toWikiName($name);
-            $ne->wikiName($wn) if ($wif->topicExists($wn));
+            $ne->wikiName($name) if ($wif->topicExists($name));
         }
     } else {
     }
@@ -219,8 +203,7 @@ sub toPrint {
 sub toString {
     my ($this, $nohtml) = @_;
     my $res = $this->{ISA}."(web=" .
-      $this->{WEB} . " topic=" .
-        $this->wif()->topicName() . ") ";
+      $this->{WEB} . ") ";
     $res .= "<b>" unless $nohtml;
     $res .= "ISA";
     $res .= "</b>" unless $nohtml;

@@ -1,15 +1,15 @@
-%META:TOPICINFO{author="WolfgangDenk" date="1271416286" format="1.1" version="1.2"}%
 ---++ <nop>%TOPIC%
-
+<!--
+   * Set SHORTDESCRIPTION = %$SHORTDESCRIPTION%
+-->
 %SHORTDESCRIPTION%
 
-This plugin adds powerful support for generation and maintenance of tables
-of contents and cross-references *across multiple topics*.
+%TOC%
 
----+++ Syntax Rules
+Supports the generation of tables of contents, together with symbolic
+cross-references that operate _within_ and _between_ topics.
 
-Adds a number of new tags:
-
+Adds a number of new macros:
 	* %<nop>SECTIONn% - inserts an anchored section header
 	* %<nop>CONTENTS% - generates a table of contents for a topic or an entire web, with full expansion depth control
 	* %<nop>REF% - inserts a symbolically named cross-reference URL
@@ -19,26 +19,223 @@ Example:
 
 %ATTACHURL%/screenshot.png
 
-TocPluginHelp uses the plugin, and contains complete help information.
+The rest of this topic is written using the plugin, so you will see macros such as %<nop>SECTION0% if the plugin
+is not installed and enabled.
 
----++ <nop>%TOPIC% Settings
+%SECTION1{name="WebOrder"}% Books
+The plugin depends on the existance of a topic called "WebOrder". This topic is referred to as the "book", and
+should contain a list of
+the topics that you want to generate section numbers for. Each topic in the book is allocated a =SECTION0=
+section number i.e. the first topic is section 1, the second is section 2 etc.
 
-<!--
-   * Set SHORTDESCRIPTION = %$SHORTDESCRIPTION%
--->
+The book topic is a simple list - either a bulleted list or a numbered list - and can be created interactively
+using the %IF{"istopic 'BookmakerPlugin'" then="BookmakerPlugin" else="Foswiki$nop:Extensions.BookmakerPlugin"}%.
 
----+++ Plugin Installation Instructions
+Each entry in the book must be the name of a topic in the current web. This plugin ships with a simple WebOrder, which
+you can view (but are advised not to change).
+
+e.g.
+%ANCHOR{type="Example" name="WebOrder",isplay="no"}% An example Weborder topic
+<verbatim>
+   * [[An Overview of Perl]]
+      1 [[Getting Started]]
+      2 [[Natural and Artificial Languages]]
+      3 AGradeExample
+   2 [[The Gory Details]]
+      * LexicalTexture
+</verbatim>
+
+%SECTION1{name="SECTION"}% The =SECTION= macro
+<i>Supported attributes:</i> =name= <p>
+
+Subsections may be inserted in any topic using the =SECTIONn= macro,
+where =n= is the required subsection level. The heading of the section
+is taken as all text after the macro up to the end of line. For example,
+the heading at the top of this section is marked with
+<pre>
+%<nop>SECTION1{name="SECTION"}% The =%<nop>SECTION= macro
+</pre>
+
+*NOTES*
+	* See also %REF{type="Section" name="IndentedWebOrder"}% for information about modifying section numbering from the book topic.
+	* Sections do not _have_ to be named, but if they are not then they can only be referred to by knowing the exact section number. Section names must be unique within the topic.
+	* The only way to _close_ a section is to start a new section with a different level, or to end the topic.
+	* You can still use standard HTML heading tags such as &lt;H1>, but sections marked this way will *not* be included in the table of contents.
+
+%SECTION3% The %SECTION<nop>0% macro
+If a %<nop>SECTION0% macro occurs in a topic, the heading of that section will replace the topic name in the table of contents.
+
+*NOTES*
+	* The =name= attribute cannot be used to refer to a %<nop>SECTION0% macro.
+
+%SECTION2{name="TOC"}% Building the table of contents
+<i>Supported attributes:</i> =depth topic=
+
+You can build a table of contents by inserting
+<pre>
+%<nop>CONTENTS%
+</pre>
+in a topic. The first level of the table of contents is normally the
+topics in the order of the list in WebOrder, though see
+%REF{type="Section" name="IndentedWebOrder"}% for information about
+modifying section numbering from the WebOrder topic. Subsections
+listed in the table are automatically linked to the target =SECTION=.
+
+	* The =topic= attribute may be used to generate a table of contents for just one topic.
+	* The =depth= attribute may be used to set the maximum number of levels to generate.
+
+%SECTION3% Output from %<nop>CONTENTS{depth=2}% macro for this web
+%CONTENTS{depth="2"}%
+%ANCHOR{type="Example" name="TOC"}% Table of contents for this web
+
+%SECTION3% Output from %<nop>CONTENTS% macro for this topic
+%CONTENTS{topic="%TOPIC%"}%
+%ANCHOR{type="Example" name="TopicTOC"}% Table of contents for this topic
+
+%X% Note that the CONTENTS macro is quite slow. This is because it has to open and analyse all topics it refers to.
+
+%I% You can still use the standard =%<nop>TOC%= macro in topics that use !TocPlugin. However only sections defined using the standard heading syntax will be visible.
+
+%SECTION2{name="TOCCHECK"}% The =TOCCHECK= macro
+
+Any topic (but most usually the WebOrder topic) may include the
+<pre>%TOCCHECK<nop>%</pre>
+macro. This causes the entries in the WebOrder topic to be
+cross-referenced against the files actually stored in the web (see
+WebIndex). Any topics which exist as files in the web but are missing
+from the WebOrder will be listed.
+
+%I% Any topics that begin with the characters "Web" are special topics and are excluded from the list, though they can still be listed in the WebOrder and will appear in the table of contents.
+
+%SECTION1% Anchors and References - the =ANCHOR=, =REF= and =REFTABLE= macros
+Bookmarks and references can be inserted into text using the ANCHOR
+and REF macros. These can be used for references, for example, to tables
+or figures.
+
+%SECTION2{name="ANCHOR"}% The =ANCHOR= macro
+<i>Supported attributes:</i> =type name display=
+
+The ANCHOR macro creates a jump target suitable for jumping to from
+somewhere else. The =type= adds the anchor to a "group"; this group is
+required when generating a reference to the anchor, and may be used to
+generate tables of same-type anchors (see
+%REF{type="Section" name="REFTABLE"}% below). The =type= can be any name,
+though convention suggests the use of types such as =Figure= and
+=Table=. The special group =Section= is used internally to refer to
+sections and subsections. Avoid using it for an =ANCHOR= or you may
+see strange results.
+
+The =ANCHOR= macro is normally visible in the output, though it may be
+made invisible by setting the =display= attribute to =no= .  For
+example: %ANCHOR{type="Figure" name="A" display="no"}% Here be sea monsters
+<pre>%<nop>ANCHOR{type="Figure" name="A" display="no"}% Here be sea
+monsters</pre> will generate an invisible anchor on the text (there's
+one one the line above, honest!) and
+<pre>&lt;A name="#Figure_A"> &lt;/A></pre>
+<pre>%<nop>ANCHOR{type="Table" name="A"}% A wooden table</pre>
+will generate:
+%ANCHOR{type="Table" name="A" display="yes"}% A wooden table
+
+All the text between the anchor and the next end-of-line will be
+used to create the anchor. If the anchor is invisible, this text will
+be invisible too.
+
+%SECTION2{name="REF"}% The =REF= macro
+<i>Supported attributes:</i> =type topic name=
+
+The =REF= macro may be used to refer to an anchor. Anchors are
+automatically inserted by =SECTION= macros or may be added using the
+=ANCHOR= macro. For a =REF= macro to work, the type of the target must be
+known. For example:
+<pre>
+See %<nop>REF{type="Example" name="WebOrder"}% for more information about WebOrder
+</pre>
+will generate:
+
+See %REF{type="Example" name="WebOrder"}% for more information about WebOrder
+
+To refer to anchors in a different topic, use the =topic= attribute.
+You can refer to sections by name by using the special type =Section=
+e.g. %<nop>REF{type="Section" name="TOCCHECK"}%.
+
+If you refer to a non-existant anchor you are warned: for example,
+<pre>%<nop>REF{type="Reference" name="NonExistantAnchor"}%</pre>generates<p>
+
+%REF{type="Reference" name="NonExistantAnchor"}%
+
+%SECTION2{name="REFTABLE"}% The =REFTABLE= macro
+<i>Supported attributes:</i> =type=
+
+The =REFTABLE= macro can be used to build tables of references based on
+the type assigned to anchors. For example, if you have a lot of
+anchors of type =Example= you can build a table of all these anchors
+thus:
+<pre>%<nop>REFTABLE{type="Example"}%</pre>
+%ANCHOR{type="Example" name="example1" display="no"}% REFTABLE{type="Table"} example
+This will insert a table like this:
+%REFTABLE{type="Example"}%
+and <pre>%<nop>REFTABLE{type=Figure}%</pre>
+will insert a table like this:
+%ANCHOR{type="Example" name="example2" display="no"}% REFTABLE{type="Figure"} example
+%REFTABLE{type="Figure"}%
+All topics listed in the WebOrder are scanned, but only anchors of the
+requested type will be listed.
+
+%I% If you use =REFTABLE= with the type =Section= the table will contain a list of all _named_ sections. %ANCHOR{type="Example" name="example2" display="no"}% %REFTABLE{type="Section"}%
+
+%SECTION1{name="AddTocButtons"}% Adding navigation buttons
+When using the =WebOrder= special topic to collect a list of topics
+into a somewhat "linearized" form (a "book"), it is often very
+convenient to be able to add navigation buttons to the previous and
+the next pages as well as to the home page (table of contents). This
+can be done by adding the %<nop>TOCBUTTONS% macro to your pages. For
+example, you can use it in a template which is included either at the
+top or the bottom of your pages. The included
+="view.tocbuttons.tmpl"= template (intended to be used with !NatSkin)
+adds the =%<nop>TOCBUTTONS%= macro to the content footer of all pages in
+the web. To activate it, use ="* Set SKIN = tocbuttons, nat"= in your
+<nop>WebPreferences.
+
+Note that the "Prev", "Home" and "Next" links will be added only for
+such topics that are listed in the =WebOrder= special topic, and they
+will only be inserted when viewing a page, i. e. they will for
+example not show up when printing such a topic or the whole "book".
+
+%SECTION1{name="IndentedWebOrder"}% Getting clever
+It is possible to change the way the table of contents for the web is
+ordered by using extra levels of indent in the WebOrder. If you indent
+a topic below another topic, then that topic will be treated as a
+section of the parent topic. Section numbers within the subtopic are
+adjusted accordingly. For example, say the WebOrder contains
+<pre>
+	* <nop>[[Top level topic]]
+	* <nop>AnotherTopLevelTopic
+</pre>
+<nop>TopLevelTopic will be numbered 1., and the first =SECTION1= within <nop>TopLevelTopic will be 1.1. <nop>AnotherTopLevelTopic will be numbered 2. If, instead, WebOrder contains
+<pre>
+	* <nop>[[Top level topic]]
+		* <nop>[[Second level topic]]
+	* <nop>AnotherTopLevelTopic
+</pre>
+<nop>TopLevelTopic will still be numbered 1., but now <nop>SecondLevelTopic will be numbered 1.1., 
+and the first =SECTION1= within <nop>SecondLevelTopic will be 1.1.1. The first =SECTION1= within 
+<nop>TopLevelTopic will now be numbered 1.2. <nop>AnotherTopLevelTopic will still be numbered 2.
+
+%SECTION1{name="tips"}% Hints and Tips
+	* Include a %<nop>TOCCHECK% macro at the end of the table of contents topic.
+	* Name all sections. This makes it easier to refer to them by symbolic names rather than trying to REF numbered sections.
+
+---+++ Installation Instructions
 %$INSTALL_INSTRUCTIONS%
-	* If you see a link here: %REF{topic=TocPluginHelp,type=Section,name=installation}% then installation was successful
-	* Check the TocPluginHelp topic. You should see expanded section numbers.
 
----+++ Plugin Info
+---+++ Info
 
 |  One Line Description: | Table of contents and cross-reference management |
 |  Author: | Foswiki:Main.CrawfordCurrie http://c-dot.co.uk |
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: |
+|  23 Mar 2011 | Made compatible with !BookmakerPlugin, which it now depends on. Now supports topics in different webs. |
 |  22 Dec 2009 | Updated for Foswiki |
 |  20 Apr 2006 | Minor doc update, headings no longer marked up as anchor text (Foswiki:Main.SteffenPoulsen) |
 |  1 Oct 2001 | Corrected directory naming (no thanks to <nop>WindowsME!) |
