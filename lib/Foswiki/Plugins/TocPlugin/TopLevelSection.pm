@@ -56,7 +56,8 @@ sub web {
 # about to perform an operation that requires it.
 sub currentTopic {
     my $this = shift;
-    my $currTopic = $this->_findTopic($this->wif()->{TOPICNAME});
+    my $ctn = $Foswiki::Plugins::SESSION->{topicName};
+    my $currTopic = $this->_findTopic($ctn);
     $currTopic->loaded(1) if $currTopic;
     return $currTopic;
 }
@@ -96,7 +97,6 @@ sub createTOC {
     my ($web, $wif) = @_;
 
     my $this = Foswiki::Plugins::TocPlugin::TopLevelSection->new($web, $wif);
-    my $retmess = "";
 
     # load the table of contents topic
     # Note that this does not use the BookmakerPlugin API for the simple reason that it has to
@@ -118,10 +118,6 @@ sub createTOC {
             my $ne = $this->processSECTIONTag($attrs);
             $ne->wikiName($name) if ($wif->topicExists($name));
         }
-    } else {
-    }
-    if ($retmess ne "") {
-        return (undef, $retmess);
     }
     
     return ($this, "");

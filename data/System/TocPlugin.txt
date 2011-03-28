@@ -235,13 +235,14 @@ and the first =SECTION1= within <nop>SecondLevelTopic will be 1.1.1. The first =
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: |
-|  23 Mar 2011 | Made compatible with !BookmakerPlugin, which it now depends on. Now supports topics in different webs. |
-|  22 Dec 2009 | Updated for Foswiki |
-|  20 Apr 2006 | Minor doc update, headings no longer marked up as anchor text (Foswiki:Main.SteffenPoulsen) |
-|  1 Oct 2001 | Corrected directory naming (no thanks to <nop>WindowsME!) |
-|  23 Sep 2001 | Directories restructured according to Plugin requirements, and turned into a zip file |
-|  15 Sep 2001 | Initial version. Originally developed for use by Motorola documentation teams. |
+|  2.1.0 (23 Mar 2011) | Made compatible with !BookmakerPlugin, which it now depends on. Now supports topics in different webs. |
+|  2.0.0 (22 Dec 2009) | Updated for Foswiki |
+|  1.0.3 (20 Apr 2006) | Minor doc update, headings no longer marked up as anchor text (Foswiki:Main.SteffenPoulsen) |
+|  1.0.2 (1 Oct 2001) | Corrected directory naming (no thanks to <nop>WindowsME!) |
+|  1.0.1 (23 Sep 2001) | Directories restructured according to Plugin requirements, and turned into a zip file |
+|  1.0.0 (15 Sep 2001) | Initial version. Originally developed for use by Motorola documentation teams. |
 |  Copyright: | &copy; 2001-2002 Motorola. All Rights Reserved. |
+|   | &copy; 2008-2011 Crawford Currie http://c-dot.co.uk. |
 |  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
 |  Home: | http://foswiki.org/Extensions/%TOPIC% |
 |  Support: | http://foswiki.org/Support/%TOPIC% |

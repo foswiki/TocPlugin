@@ -17,7 +17,7 @@
 package Foswiki::Plugins::TocPlugin;
 
 our $VERSION = '$Rev$';
-our $RELEASE = '2.1';
+our $RELEASE = '2.1.0';
 our $wif;
 our $SHORTDESCRIPTION = 'Sophisticated table of contents generation';
 our $NO_PREFS_IN_TOPIC = 1;

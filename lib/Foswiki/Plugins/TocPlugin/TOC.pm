@@ -68,10 +68,10 @@ sub _processTOCTags {
     # Anchors and sections must be done before we generate the table
     # of contents and ref tables.
     while ($text =~
-             s/%((SECTION[0-9]+)|ANCHOR)({[^%]*})?%(.*)/\<TOC_Mark\>/o) {
+             s/%(SECTION\d+|ANCHOR)({[^%]*})?%(.*)/\<TOC_Mark\>/) {
         my $tag = $1;
-        my $attrs = Foswiki::Plugins::TocPlugin::Attrs->new($3);
-        $attrs->set("text", $4);
+        my $attrs = Foswiki::Plugins::TocPlugin::Attrs->new($2);
+        $attrs->set("text", $3);
         if ($ct) {
             if ($tag =~ s/SECTION([0-9]+)//o) {
                 my $level = $1;

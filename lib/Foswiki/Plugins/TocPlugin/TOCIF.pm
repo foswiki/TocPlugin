@@ -31,21 +31,14 @@ my $singleton;
 # Factory method, returns a singleton instance of a Foswiki interface
 sub getInterface {
     my ($class, $web, $topic) = @_;
-    my $this;
-    if ($singleton) {
-        $this = $singleton;
-    } else {
-        $this = {};
-        $singleton = $this;
-    }
-    $this->{WEBNAME} = $web;
-    $this->{TOPICNAME} = $topic;
-    return bless($this, $class);
+    $singleton ||= bless({}, $class);
+    return $singleton;
 }
 
 sub topicExists {
     my ($this, $topic) = @_;
-    my ($w, $t) = Foswiki::Func::normalizeWebTopicName($this->{WEBNAME}, $topic);
+    my ($w, $t) = Foswiki::Func::normalizeWebTopicName(
+	$Foswiki::Plugins::SESSION->{webName}, $topic);
     return Foswiki::Func::topicExists($w, $t);
 }
 
@@ -53,7 +46,8 @@ sub readTopic {
     my ($this, $topic) = @_;
     my $text = "";
     # read the topic
-    my ($w, $t) = Foswiki::Func::normalizeWebTopicName($this->{WEBNAME}, $topic);
+    my ($w, $t) = Foswiki::Func::normalizeWebTopicName(
+	$Foswiki::Plugins::SESSION->{webName}, $topic);
     $text = Foswiki::Func::readTopic($w, $t);
     # expand the variables -- in the context of the appropriate topic
     $text = Foswiki::Func::expandCommonVariables($text, $t, $w);
@@ -65,7 +59,7 @@ sub readTopic {
 
 sub webDirList {
     my $this = shift;
-    return Foswiki::Func::getTopicList($this->{WEBNAME});
+    return Foswiki::Func::getTopicList($Foswiki::Plugins::SESSION->{webName});
 }
 
 1;
