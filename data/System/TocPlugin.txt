@@ -235,6 +235,7 @@ and the first =SECTION1= within <nop>SecondLevelTopic will be 1.1.1. The first =
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: |
+|  2.1.1 (15 Apr 2011) | Minor correction on file permissions. |
 |  2.1.0 (23 Mar 2011) | Made compatible with !BookmakerPlugin, which it now depends on. Now supports topics in different webs. |
 |  2.0.0 (22 Dec 2009) | Updated for Foswiki |
 |  1.0.3 (20 Apr 2006) | Minor doc update, headings no longer marked up as anchor text (Foswiki:Main.SteffenPoulsen) |
