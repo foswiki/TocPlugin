@@ -1,7 +1,7 @@
 !noci
-data/System/TocPlugin.txt 0444
-data/System/TocPluginHelp.txt 0444
-data/System/WebOrder.txt 0444
+data/System/TocPlugin.txt 0644
+data/System/TocPluginHelp.txt 0644
+data/System/WebOrder.txt 0644
 lib/Foswiki/Plugins/TocPlugin.pm 0444
 lib/Foswiki/Plugins/TocPlugin/Anchor.pm 0444
 lib/Foswiki/Plugins/TocPlugin/Attrs.pm 0444
@@ -9,4 +9,4 @@ lib/Foswiki/Plugins/TocPlugin/Section.pm 0444
 lib/Foswiki/Plugins/TocPlugin/TOC.pm 0444
 lib/Foswiki/Plugins/TocPlugin/TOCIF.pm 0444
 lib/Foswiki/Plugins/TocPlugin/TopLevelSection.pm 0444
-pub/System/TocPlugin/screenshot.png
+pub/System/TocPlugin/screenshot.png 0644
