@@ -134,7 +134,7 @@ sub toPrint {
 sub toString {
     my ( $this, $nohtml ) = @_;
     my $res =
-        $this->{ISA} 
+        $this->{ISA}
       . "(type="
       . $this->type()
       . " uid='"

@@ -153,7 +153,7 @@ ASSERT(
 ASSERT(
     $root->processREFTABLETag(
         Foswiki::Plugins::TocPlugin::Attrs->new("type=fred")
-      ) eq "$REFT$TR${TH}fred$HT$RT$TFER"
+    ) eq "$REFT$TR${TH}fred$HT$RT$TFER"
 );
 
 1;
