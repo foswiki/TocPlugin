@@ -1,0 +1,9 @@
+*.swp
+igp_*
+TocPlugin.md5
+TocPlugin.sha1
+TocPlugin.tgz
+TocPlugin.txt
+TocPlugin.zip
+TocPlugin_installer
+TocPlugin_installer.pl
